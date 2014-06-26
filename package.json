@@ -31,6 +31,7 @@
     "grunt-contrib-sass": "~0.7.3",
     "grunt-contrib-watch": "~0.6.1",
     "load-grunt-tasks": "~0.4.0",
+    "qunitjs": "~1.14.0",
     "time-grunt": "~0.3.1"
   },
   "engines": {
