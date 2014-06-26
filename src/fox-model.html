@@ -1,0 +1,65 @@
+<fox-element name="fox-model" attributes="mode field">
+
+    <script>
+        function fireChange(oldVal, newVal) {
+            fox.fireEvent(this, 'data-change', {
+                'detail' : {
+                    oldVal : oldVal,
+                    newVal : newVal
+                }
+            });
+        }
+
+        fox('fox-model', {
+            mode: 'replace',
+
+            lifecycle : {
+                created: function() {
+                    this._old = null;
+                }
+            },
+
+            methods: {
+                datasourceFilter: function(data) {
+
+                    // save old data
+                    this._old = this._data_;
+
+                    if (data && this.field) {
+                        this.field.split('.').forEach(function(field){
+                            data = data[field];
+                        });
+                    }
+
+                    // this._data_ will be replaced with new data after this return
+                    return data;
+                },
+
+                // exec after datsourceFilter
+                datasourceChanged: function(newVal) {
+
+                    // mode is only valid when data's type is array
+                    if ($.type(newVal) === 'array') {
+
+                        if (!this._old || this.mode === 'replace') {
+                            this._data_ = newVal;
+                        }
+                        else if ($.type(this._old) === 'array') {
+                            if (this.mode === 'append') {
+                                this._data_ = this._old.concat(newVal);
+                            }
+                            else if(this.mode === 'prepend') {
+                                this._data_ = newVal.concat(this._old);
+                            }
+                        }
+
+                    }
+
+                    fireChange.apply(this, [this._old, this._data_]);
+                }
+            }
+
+        });
+    </script>
+
+</fox-element>
