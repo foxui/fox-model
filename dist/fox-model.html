@@ -23,7 +23,7 @@
                 datasourceFilter: function(data) {
 
                     // save old data
-                    this._old = this._data_;
+                    this._old = this.data;
 
                     if (data && this.field) {
                         this.field.split('.').forEach(function(field){
@@ -42,20 +42,20 @@
                     if ($.type(newVal) === 'array') {
 
                         if (!this._old || this.mode === 'replace') {
-                            this._data_ = newVal;
+                            this.data = newVal;
                         }
                         else if ($.type(this._old) === 'array') {
                             if (this.mode === 'append') {
-                                this._data_ = this._old.concat(newVal);
+                                this.data = this._old.concat(newVal);
                             }
                             else if(this.mode === 'prepend') {
-                                this._data_ = newVal.concat(this._old);
+                                this.data = newVal.concat(this._old);
                             }
                         }
 
                     }
 
-                    fireChange.apply(this, [this._old, this._data_]);
+                    fireChange.apply(this, [this._old, this.data]);
                 }
             }
 
